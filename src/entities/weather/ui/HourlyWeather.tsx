@@ -16,7 +16,7 @@ export const HourlyWeather = ({ rawData }: { rawData: any[] }) => {
   if (!hourlyData || hourlyData.length === 0) return null;
 
   return (
-    <div className="mb-7 mt-5 min-h-[50px] w-full max-w-[912px] rounded-xl bg-white/20 p-4 text-white shadow-sm backdrop-blur-md">
+    <div className="mb-7 mt-10 min-h-[50px] w-full max-w-[912px] rounded-xl bg-white/20 p-4 text-white shadow-sm backdrop-blur-md">
       <p className="mb-4 text-xs font-medium opacity-80">시간대별 기온</p>
       <div className="scrollbar-hide flex gap-7 overflow-x-auto">
         {hourlyData.map((item, key) => (

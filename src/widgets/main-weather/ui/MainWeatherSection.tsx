@@ -81,7 +81,7 @@ export const MainWeather = () => {
 
   return (
     <section className="w-full">
-      <section className="mt-2 mb-10 w-full">
+      <section className="mt-2 mb-14 w-full">
         <SearchInput onSelectLocation={handleSelectLocation}/>
       </section>
       
