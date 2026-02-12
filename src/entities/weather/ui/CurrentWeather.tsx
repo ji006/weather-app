@@ -14,7 +14,7 @@ export const CurrentWeather = () => {
 
         {/* 현재 기온 정보 */}
         <div className="mb-5 flex justify-between">
-          <span className="text-md mb-1 font-medium opacity-80 md:text-lg">
+          <span className="text-[15px] mb-1 font-medium opacity-80 md:text-lg">
             현재 기온
           </span>
           <span className="text-7xl leading-none text-gray-700 md:text-[90px]">
