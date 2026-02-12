@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Region } from "../../../shared/lib/regionUtils";
 import convertRegionData from "../../../shared/lib/regionUtils";
 import districtsData from "../../../shared/assets/data/korea_districts.json";
@@ -11,6 +11,27 @@ interface SearchInputProps {
 export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
   const [keyword, setKeyword] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null); // 검색창 영역을 가리킬 레퍼런스 생성
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // 클릭된 곳이 searchRef(검색창 전체) 밖이라면 리스트를 닫음
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    // 문서 전체에 클릭 이벤트 등록
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // 컴포넌트가 사라질 때 이벤트 제거 (메모리 누수 방지)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // 전체 데이터를 Region 객체 배열로 딱 한 번 가공
   const regions: Region[] = useMemo(() => {
@@ -36,7 +57,7 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
   };
 
   return (
-    <div className="flex w-full justify-center px-4">
+    <div className="flex w-full justify-center px-4" ref={searchRef}>
       <div className="relative w-full max-w-[912px]">
         {/* 아이콘 */}
         <div className="absolute inset-y-0 left-4 flex items-center">
@@ -46,18 +67,19 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
         <input
           type="text"
           value={keyword}
+          onFocus={() => setIsOpen(true)}
           onChange={(e) => {
             setKeyword(e.target.value);
             setIsOpen(true);
           }}
           placeholder="지역을 입력하세요"
           className={`h-[50px] w-full border border-purple bg-white pl-12 pr-4 text-gray-800 shadow-sm placeholder:text-gray-500 focus:outline-none ${
-            isOpen
+            isOpen && keyword.length > 0
               ? "rounded-t-[25px] border-b-transparent" // 리스트가 열리면 아래쪽 둥근 모서리 제거 및 선 없앰
               : "rounded-full bg-opacity-40" // 평소에는 완전 둥글게
           }`}
         />
-        {isOpen && (
+        {isOpen && keyword.length > 0 &&  (
           <ul className="absolute z-10 w-full overflow-hidden rounded-b-3xl border border-purple border-t-gray-300 bg-white/95 shadow-2xl">
             {suggestions.length > 0 ? (
               suggestions.map((region) => (
