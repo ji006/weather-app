@@ -1,15 +1,19 @@
 // src/pages/home/ui/HomePage.tsx
 import { SearchInput } from "../../../features/search-location/ui/SearchInput";
 import { Header } from "../../../widgets/header/ui/Header";
+import { MainWeather } from "../../../widgets/main-weather/ui/MainWeatherSection";
 
 export const HomePage = () => {
   return (
     // 배경 그라데이션 (이미지 느낌)
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#A7D5E4] to-[#80A9E9]">
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#A7D5E4] to-[#80A9E9] flex flex-col items-center">
       <Header />
-      <section className="w-full mt-2">
+      <section className="mt-2 mb-10 w-full">
         <SearchInput />
       </section>
+      <div className="w-full max-w-[912px] px-6">
+        <MainWeather />
+      </div>
     </div>
   );
 };
