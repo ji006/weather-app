@@ -3,33 +3,55 @@ import { CurrentWeather } from "../../../entities/weather/ui/CurrentWeather";
 import { HourlyWeather } from "../../../entities/weather/ui/HourlyWeather";
 import { getWeatherByTime } from "../../../shared/api/weatherApi";
 import { getTodayMinMax } from "../../../shared/lib/weatherUtils";
+import { getRegionName } from "../../../shared/api/kakaoApi";
 
 export const MainWeather = () => {
   const [rawData, setRawData] = useState<any[]>([]);
   const [fullDayData, setFullDayData] = useState<any[]>([]); // 오늘 최저/최고 기온
   const [loading, setLoading] = useState(true);
+  const [locationName, setLocationName] = useState("위치 확인 중..."); // 지역명 표시용
+
+  // 서울 기본 좌표
+  const SEOUL = { lat: 37.56, lon: 126.97 };
+
+  const fetchWeatherData = async (lat: number, lon: number, label: string) => {
+    try {
+      setLoading(true);
+      const [currentData, fullData] = await Promise.all([
+        getWeatherByTime(lat, lon, false),
+        getWeatherByTime(lat, lon, true),
+      ]);
+
+      setRawData(currentData);
+      setFullDayData(fullData);
+      setLocationName(label);
+    } catch (error) {
+      console.error("날씨 정보 로드 실패:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        setLoading(true);
-
-        // 두 가지 데이터를 병렬로 호출 (서울로 일단 설정)
-        const [currentData, fullData] = await Promise.all([
-          getWeatherByTime(37.56, 126.97, false),
-          getWeatherByTime(37.56, 126.97, true),
-        ]);
-
-        setRawData(currentData);
-        setFullDayData(fullData);
-      } catch (error) {
-        console.error("날씨 데이터를 가져오는 중 에러 발생:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAllData();
+    if (!navigator.geolocation) {
+      // 기본은 서울로
+      fetchWeatherData(SEOUL.lat, SEOUL.lon, "서울특별시 (기본)");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        // 해당 좌표로 호출
+        const { latitude, longitude } = position.coords;
+        const regionName = await getRegionName(latitude, longitude);
+        fetchWeatherData(latitude, longitude, regionName);
+      },
+      (error) => {
+        // 위치 거부/오류 시: 서울 좌표로 호출
+        console.warn("위치 정보 접근 거부됨, 서울 날씨를 보여줍니다.");
+        fetchWeatherData(SEOUL.lat, SEOUL.lon, "서울특별시 (기본)");
+      },
+      { timeout: 7000 }, // 7초 내에 위치 안 잡히면 에러로 처리
+    );
   }, []);
 
   if (loading)
@@ -41,7 +63,12 @@ export const MainWeather = () => {
 
   return (
     <section className="w-full">
-      <CurrentWeather temp={currentTemp} minTemp={min} maxTemp={max} />
+      <CurrentWeather
+        temp={currentTemp}
+        minTemp={min}
+        maxTemp={max}
+        location={locationName}
+      />
 
       <HourlyWeather rawData={rawData} />
     </section>
