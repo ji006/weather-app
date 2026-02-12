@@ -1,6 +1,14 @@
 import { Star } from "lucide-react";
 
-export const CurrentWeather = () => {
+interface CurrentWeatherProps {
+  temp: string;
+  minTemp: string | number;
+  maxTemp: string | number;
+}
+
+export const CurrentWeather = ({temp,
+    minTemp,
+    maxTemp}:CurrentWeatherProps) => {
   return (
     <div className="flex w-full justify-center px-4">
       <div className="min-h-[250px] w-full max-w-[912px] rounded-xl bg-white/20 p-8 text-white shadow-sm backdrop-blur-md">
@@ -18,7 +26,7 @@ export const CurrentWeather = () => {
             현재 기온
           </span>
           <span className="text-7xl leading-none text-gray-700 md:text-[90px]">
-            10°
+            {temp}°
           </span>
         </div>
 
@@ -26,11 +34,11 @@ export const CurrentWeather = () => {
         <div className="flex gap-2 border-t border-white/20 pt-4 text-lg font-bold md:text-xl">
           <div className="flex items-center gap-2 rounded-full bg-blue-500/20 px-4 py-2">
             <span className="text-base text-blue-100">최저</span>
-            <span>1°</span>
+            <span>{minTemp}°</span>
           </div>
           <div className="flex items-center gap-2 rounded-full bg-blue-500/20 px-4 py-2">
             <span className="text-base text-blue-100">최고</span>
-            <span>11°</span>
+            <span>{maxTemp}°</span>
           </div>
         </div>
       </div>

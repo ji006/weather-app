@@ -41,3 +41,24 @@ export const getBaseTime = () => {
 
   return { baseDate, baseTime };
 };
+
+export const getTodayFullTime = () => {
+  const now = new Date();
+
+  // 현재 시각이 새벽 2시 10분 이전인지 확인
+  const currentTime = now.getHours() * 100 + now.getMinutes();
+
+  // 02:10 이전이라면 날짜를 하루 전으로
+  if (currentTime < 210) {
+    now.setDate(now.getDate() - 1);
+  }
+  
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  return {
+    baseDate: `${year}${month}${day}`,
+    baseTime: "0200", // 최저/최고기온(TMN, TMX)이 모두 포함된 시간대
+  };
+};
