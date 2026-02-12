@@ -3,7 +3,7 @@ import { Star, CloudMoon } from "lucide-react";
 export const Header = () => {
   return (
     <div className="relative mx-auto flex w-full max-w-[912px] items-center justify-between px-6 py-8">
-      <div className="" />
+      <div />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer">
         <CloudMoon className="h-[55px] w-[55px] text-white" />
       </div>
