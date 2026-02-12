@@ -3,7 +3,8 @@ import { CurrentWeather } from "../../../entities/weather/ui/CurrentWeather";
 import { HourlyWeather } from "../../../entities/weather/ui/HourlyWeather";
 import { getWeatherByTime } from "../../../shared/api/weatherApi";
 import { getTodayMinMax } from "../../../shared/lib/weatherUtils";
-import { getRegionName } from "../../../shared/api/kakaoApi";
+import { getRegionName, searchLocation } from "../../../shared/api/kakaoApi";
+import { SearchInput } from "../../../features/search-location/ui/SearchInput";
 
 export const MainWeather = () => {
   const [rawData, setRawData] = useState<any[]>([]);
@@ -61,8 +62,29 @@ export const MainWeather = () => {
   const currentTemp = currentTempItem ? currentTempItem.fcstValue : "--";
   const { min, max } = getTodayMinMax(fullDayData);
 
+  const handleSelectLocation = async (address: string, displayName:string) => {
+    try {
+      // 카카오 API를 통해 '주소 텍스트'->'위경도 좌표'로 변환
+      const coords = await searchLocation(address);
+
+      if (coords) {
+        // 변환된 좌표(lat, lon)로 API 호출
+        await fetchWeatherData(coords.lat, coords.lon, address);
+        setLocationName(displayName);
+      } else {
+        alert("해당 지역의 좌표를 찾을 수 없습니다.");
+      }
+    } catch (error) {
+      console.error("날씨 연동 중 오류 발생:", error);
+    }
+  };
+
   return (
     <section className="w-full">
+      <section className="mt-2 mb-10 w-full">
+        <SearchInput onSelectLocation={handleSelectLocation}/>
+      </section>
+      
       <CurrentWeather
         temp={currentTemp}
         minTemp={min}

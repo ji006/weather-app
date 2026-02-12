@@ -1,28 +1,39 @@
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import type { Region } from "../../../shared/lib/regionUtils";
+import convertRegionData from "../../../shared/lib/regionUtils";
+import districtsData from "../../../shared/assets/data/korea_districts.json";
 
-export const SearchInput = () => {
+interface SearchInputProps {
+  onSelectLocation: (address: string, displayName: string) => void;
+}
+
+export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
   const [keyword, setKeyword] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  
-  const allSuggestions = [
-    { id: "1", displayName: "서울특별시", address: "서울특별시" },
-    {
-      id: "2",
-      displayName: "종로구 청운동",
-      address: "서울특별시 종로구 청운동",
-    },
-    {
-      id: "3",
-      displayName: "강남구 역삼동",
-      address: "서울특별시 강남구 역삼동",
-    },
-  ];
 
-  // 입력어에 따라 필터링 (결과가 없으면 빈 배열)
-  const suggestions = keyword.trim()
-    ? allSuggestions.filter((s) => s.address.includes(keyword))
-    : [];
+  // 전체 데이터를 Region 객체 배열로 딱 한 번 가공
+  const regions: Region[] = useMemo(() => {
+    return districtsData.map(convertRegionData);
+  }, []);
+
+  // 사용자가 입력한 키워드에 따라 실시간 필터링
+  const suggestions = useMemo(() => {
+    const trimmed = keyword.trim();
+    if (trimmed.length < 1) return [];
+
+    const searchTarget = trimmed.replace(/\s+/g, "");
+
+    return regions
+      .filter((r) => r.address.replace(/\s+/g, "").includes(searchTarget))
+      .slice(0, 10);
+  }, [keyword, regions]);
+
+  const handleSelect = (region: Region) => {
+    onSelectLocation(region.address, region.displayName);
+    setKeyword("");
+    setIsOpen(false);
+  };
 
   return (
     <div className="flex w-full justify-center px-4">
@@ -52,6 +63,7 @@ export const SearchInput = () => {
               suggestions.map((region) => (
                 <li
                   key={region.id}
+                  onClick={() => handleSelect(region)}
                   className="flex cursor-pointer flex-col border-t-2 border-gray-100 bg-opacity-35 px-12 py-3 first:border-none hover:bg-[#E1E8F2]"
                 >
                   <span className="text-sm font-bold text-gray-800 md:text-base">
