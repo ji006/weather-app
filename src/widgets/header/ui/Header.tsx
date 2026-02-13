@@ -25,10 +25,12 @@ export const Header = ({ isFav }: HeaderProps) => {
       </div>
       <div onClick={handleFavClick} className="flex flex-col items-end">
         <div
-          className={`flex cursor-pointer flex-col items-center ${isFav ? "invisible" : "visible"}`}
+          className={`flex cursor-pointer flex-col items-center rounded-xl bg-white/20 p-2 transition-colors hover:bg-white/30 active:scale-95 ${isFav ? "invisible" : "visible"}`}
         >
-          <Star className="h-8 w-8 fill-slate-300 text-slate-400" />
-          <span className="mt-1 text-[9px] font-bold text-black">즐겨찾기</span>
+          <Star className="h-8 w-8 fill-yellow-200 text-yellow-200 transition-all" />
+          <span className="mt-1 text-[9px] font-bold text-gray-500">
+            즐겨찾기
+          </span>
         </div>
       </div>
     </div>
