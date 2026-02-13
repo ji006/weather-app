@@ -1,4 +1,6 @@
 import { Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useLocationStore } from "../../../shared/store/useLoaction";
 
 interface FavoriteWeatherProps {
   location: string;
@@ -15,8 +17,17 @@ export const FavoriteWeatherCard = ({
   max,
   isFavorite = true,
 }: FavoriteWeatherProps) => {
+  const navigate = useNavigate();
+  const setLocation = useLocationStore((state) => state.setLocation);
+  const handleCardClick = () => {
+    setLocation(location, location);
+    navigate("/");
+  };
   return (
-    <div className="flex h-[186px] w-full max-w-[340px] flex-col justify-between rounded-2xl bg-white/30 p-5 shadow-md backdrop-blur-md transition-all hover:bg-white/35 hover:shadow-lg">
+    <div
+      onClick={handleCardClick}
+      className="flex h-[186px] w-full max-w-[340px] flex-col justify-between rounded-2xl bg-white/30 p-5 shadow-md backdrop-blur-md transition-all hover:cursor-pointer hover:bg-white/35 hover:shadow-lg"
+    >
       <div className="flex items-start justify-between">
         <span className="truncate pr-4 text-xl font-medium text-gray-800 md:text-2xl">
           {location}
