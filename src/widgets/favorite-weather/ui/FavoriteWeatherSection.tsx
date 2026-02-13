@@ -21,7 +21,7 @@ export const FavoriteWeatherSection = () => {
   }
 
   return (
-    <div className="mt-8 flex w-full max-w-[912px] flex-col items-center">
+    <div className="my-8 flex w-full max-w-[912px] flex-col items-center">
       <div className="w-full max-w-[912px]">
         <h2 className="mb-4 px-1 text-lg font-bold text-white">관심 지역</h2>
       </div>
@@ -33,12 +33,13 @@ export const FavoriteWeatherSection = () => {
           const item = result.data;
           // 최저/최고 기온 계산
           const { min, max } = getTodayMinMax(item.fullDayData);
+          const currentFavorite = favorites[index];
 
           return (
             <FavoriteWeatherCard
               key={item.address}
               address={item.address}
-              location={item.displayAdr}
+              location={currentFavorite?.displayAdr || item.displayAdr}
               temp={item.temp}
               min={min}
               max={max}
