@@ -1,4 +1,6 @@
 import { Star } from "lucide-react";
+import { useLocationStore } from "../../../shared/store/useLoaction";
+import { useFavorite } from "../../../shared/store/useFavorite";
 
 interface CurrentWeatherProps {
   temp: string;
@@ -13,6 +15,23 @@ export const CurrentWeather = ({
   maxTemp,
   location,
 }: CurrentWeatherProps) => {
+  const { selectedAddress } = useLocationStore();
+  const { addFavorite, removeFavorite, isFavorite } = useFavorite();
+
+  const isFav = selectedAddress ? isFavorite(selectedAddress) : false;
+
+  const toggleFavorite = () => {
+    if (!selectedAddress) {
+      alert("장소 정보를 가져올 수 없습니다.");
+      return;
+    }
+    if (isFav) {
+      removeFavorite(selectedAddress);
+    } else {
+      addFavorite(selectedAddress, location);
+    }
+  };
+
   return (
     <div className="flex w-full justify-center px-4">
       <div className="min-h-[250px] w-full max-w-[912px] rounded-xl bg-white/20 p-8 text-white shadow-sm backdrop-blur-md">
@@ -23,13 +42,18 @@ export const CurrentWeather = ({
           >
             {location}
           </h2>
-          <button className="hover:scale-110">
+          <button
+            onClick={toggleFavorite}
+            className="hover:scale-110"
+          >
             <Star
-              className={`fill-none text-yellow-200 ${
+              className={`fill-none ${
                 location.length >= 7
                   ? "h-6 w-6 md:h-7 md:w-7" // 7자 이상: 모바일 작게(h-6)
                   : "h-7 w-7"
-              } `}
+              } ${
+                isFav ? "fill-yellow-200 text-yellow-200" : "text-white"
+              }`}
             />
           </button>
         </div>

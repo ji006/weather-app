@@ -8,7 +8,7 @@ import { useLocationStore } from "../../../shared/store/useLoaction";
 import { useWeatherQuery } from "../../../entities/weather/model/useWeatherQuery";
 
 export const MainWeather = () => {
-  const { selectedAddress, selectedDisplay } = useLocationStore();
+  const { selectedAddress, selectedDisplay,setLocation } = useLocationStore();
 
   // 상태 선언
   const [coords, setCoords] = useState({ lat: 37.56, lon: 126.97 }); // 기본 서울
@@ -23,6 +23,7 @@ export const MainWeather = () => {
       if (result) {
         setCoords({ lat: result.lat, lon: result.lon });
         setLocationName(displayName);
+        setLocation(address, displayName);
       } else {
         // 좌표를 못 찾았을 때의 피드백
         console.warn("좌표를 찾을 수 없는 지역입니다.");
@@ -48,10 +49,12 @@ export const MainWeather = () => {
           const regionName = await getRegionName(latitude, longitude);
           setCoords({ lat: latitude, lon: longitude });
           setLocationName(regionName);
+          setLocation(regionName, regionName);
         },
         (error) => {
           console.warn("위치 권한 거부됨, 서울 날씨 가져옴");
           setCoords({ lat: 37.56, lon: 126.97 });
+          setLocation("서울특별시", "서울특별시");
         },
       );
     }
