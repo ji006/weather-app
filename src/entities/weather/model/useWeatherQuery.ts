@@ -12,6 +12,7 @@ export const useWeatherQuery = (lat: number, lon: number) => {
       ]);
       return { currentData, fullDayData };
     },
-    staleTime: 1000 * 60 * 5, // 5분 동안은 캐시된 데이터를 사용 (서버 부하 감소)
+    staleTime: 1000 * 60 * 10, // 10분 동안은 캐시된 데이터를 사용 (서버 부하 감소)
+    gcTime: 1000 * 60 * 60, // 1시간 동안 메모리에 보관
   });
 };
