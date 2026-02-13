@@ -1,6 +1,7 @@
 import { Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLocationStore } from "../../../shared/store/useLoaction";
+import { useFavorite } from "../../../shared/store/useFavorite";
 
 interface FavoriteWeatherProps {
   address: string;
@@ -25,6 +26,15 @@ export const FavoriteWeatherCard = ({
     setLocation(address, location);
     navigate("/");
   };
+
+  const { removeFavorite } = useFavorite();
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 카드 클릭 이벤트가 발생하지 않도록 막음
+
+    removeFavorite(address);
+  };
+
   return (
     <div
       onClick={handleCardClick}
@@ -43,7 +53,10 @@ export const FavoriteWeatherCard = ({
           <span>최저: {min}°</span>
           <span>최고: {max}°</span>
         </div>
-        <button className="rounded-full bg-white/20 p-2 transition-colors hover:bg-white/30 active:scale-95">
+        <button
+          onClick={handleFavorite}
+          className="rounded-full bg-white/20 p-2 transition-colors hover:bg-white/30 active:scale-95"
+        >
           <Star
             className={`h-7 w-7 text-white transition-all ${isFavorite ? "fill-yellow-100 text-yellow-100" : "text-white"}`}
           />
