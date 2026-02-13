@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocationStore } from "../../../shared/store/useLoaction";
 
 interface FavoriteWeatherProps {
+  address: string;
   location: string;
   temp: number | string;
   min: number | string;
@@ -11,6 +12,7 @@ interface FavoriteWeatherProps {
 }
 
 export const FavoriteWeatherCard = ({
+  address,
   location,
   temp,
   min,
@@ -20,7 +22,7 @@ export const FavoriteWeatherCard = ({
   const navigate = useNavigate();
   const setLocation = useLocationStore((state) => state.setLocation);
   const handleCardClick = () => {
-    setLocation(location, location);
+    setLocation(address, location);
     navigate("/");
   };
   return (
