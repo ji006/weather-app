@@ -1,4 +1,11 @@
-import { Sun, Cloud, CloudRain, CloudSnow, CloudSun, BadgeQuestionMarkIcon } from "lucide-react";
+import {
+  Sun,
+  Cloud,
+  CloudRain,
+  CloudSnow,
+  CloudSun,
+  BadgeQuestionMarkIcon,
+} from "lucide-react";
 import { formatHourlyData } from "../../../shared/lib/weatherUtils";
 
 const iconMap: { [key: string]: React.ReactNode } = {
@@ -12,13 +19,13 @@ const iconMap: { [key: string]: React.ReactNode } = {
 export const HourlyWeather = ({ rawData }: { rawData: any[] }) => {
   const hourlyData = formatHourlyData(rawData);
 
-  // 데이터가 없을 때를 대비
   if (!hourlyData || hourlyData.length === 0) return null;
 
   return (
-    <div className="mb-7 mt-10 min-h-[50px] w-full max-w-[912px] rounded-xl bg-white/20 p-4 text-white shadow-sm backdrop-blur-md">
+    <div className="mb-7 mt-10 w-full max-w-[912px] rounded-xl bg-white/20 p-4 text-white shadow-sm backdrop-blur-md">
       <p className="mb-4 text-xs font-medium opacity-80">시간대별 기온</p>
-      <div className="scrollbar-hide flex gap-7 overflow-x-auto">
+
+      <div className="scrollbar-width-none md:scrollbar-width-thin flex gap-7 overflow-x-auto md:pb-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-transparent md:[&::-webkit-scrollbar-thumb]:bg-white/40 [&::-webkit-scrollbar-track]:bg-transparent md:[&::-webkit-scrollbar-track]:bg-white/10 [&::-webkit-scrollbar]:h-[10px]">
         {hourlyData.map((item, key) => (
           <div
             key={`${item.time}-${key}`}
