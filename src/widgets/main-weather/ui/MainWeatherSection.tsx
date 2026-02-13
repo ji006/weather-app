@@ -8,13 +8,19 @@ import { useLocationStore } from "../../../shared/store/useLoaction";
 import { useWeatherQuery } from "../../../entities/weather/model/useWeatherQuery";
 
 export const MainWeather = () => {
-  const { selectedAddress, selectedDisplay,setLocation } = useLocationStore();
+  const { selectedAddress, selectedDisplay, setLocation } = useLocationStore();
 
   // 상태 선언
-  const [coords, setCoords] = useState({ lat: 37.56, lon: 126.97 }); // 기본 서울
+  const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(
+    null,
+  );
   const [locationName, setLocationName] = useState("서울특별시 (기본)");
 
-  const { data, isLoading } = useWeatherQuery(coords.lat, coords.lon);
+  const { data, isLoading } = useWeatherQuery(
+    coords?.lat ?? 0,
+    coords?.lon ?? 0,
+    { enabled: !!coords },
+  );
 
   // 주소를 좌표로 바꿔서 날씨를 가져오는 핸들러
   const handleSelectLocation = async (address: string, displayName: string) => {
@@ -52,17 +58,24 @@ export const MainWeather = () => {
           setLocation(regionName, regionName);
         },
         (error) => {
-          console.warn("위치 권한 거부됨, 서울 날씨 가져옴");
           setCoords({ lat: 37.56, lon: 126.97 });
-          setLocation("서울특별시", "서울특별시");
+          setLocation("서울특별시", "서울특별시 (기본)");
         },
       );
     }
   }, [selectedAddress]);
 
-  // 로딩 처리는 TanStack Query가 주는 isLoading으로 해결
-  if (isLoading)
-    return <div className="p-10 text-white">날씨 데이터를 불러오는 중...</div>;
+  // 위치(좌표) 자체가 아직 없을 때
+  if (!coords) {
+    return <div className="py-20 text-center  text-white">위치 정보를 확인 중입니다...</div>;
+  }
+
+  // 위치는 찾았는데, 해당 위치의 날씨를 불러오는 중일 때
+  if (isLoading) {
+    return (
+      <div className="py-20 text-center text-white">날씨 정보를 불러오는 중입니다...</div>
+    );
+  }
 
   if (!data)
     return (
