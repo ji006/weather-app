@@ -14,8 +14,13 @@ export const FavoriteWeatherSection = () => {
 
   if (isLoading) {
     return (
-      <div className="py-20 text-center text-white">
-        날씨 정보를 불러오는 중...
+      <div className="my-8 flex w-full max-w-[912px] flex-col items-center">
+        <div className="w-full max-w-[912px]">
+          <h2 className="mb-4 px-1 text-lg font-bold text-white">관심 지역</h2>
+        </div>
+        <div className="py-20 text-center text-white">
+          정보를 불러오는 중입니다...
+        </div>
       </div>
     );
   }
