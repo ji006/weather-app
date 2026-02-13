@@ -51,7 +51,7 @@ export const MainWeather = () => {
         console.warn("위치 정보 접근 거부됨, 서울 날씨를 보여줍니다.");
         fetchWeatherData(SEOUL.lat, SEOUL.lon, "서울특별시 (기본)");
       },
-      { timeout: 7000 }, // 7초 내에 위치 안 잡히면 에러로 처리
+      { timeout: 10000 }, // 10초 내에 위치 안 잡히면 에러로 처리
     );
   }, []);
 
