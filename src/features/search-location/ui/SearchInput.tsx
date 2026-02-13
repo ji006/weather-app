@@ -1,8 +1,9 @@
-import { Search } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Region } from "../../../shared/lib/regionUtils";
 import convertRegionData from "../../../shared/lib/regionUtils";
 import districtsData from "../../../shared/assets/data/korea_districts.json";
+import { useFavorite } from "../../../shared/store/useFavorite";
 
 interface SearchInputProps {
   onSelectLocation: (address: string, displayName: string) => void;
@@ -12,6 +13,22 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
   const [keyword, setKeyword] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null); // 검색창 영역을 가리킬 레퍼런스 생성
+
+  // 즐겨찾기
+  const { addFavorite, removeFavorite, isFavorite } = useFavorite();
+
+  const toggleFavorite = (selectedAddress: string, displayName: string) => {
+    const isFav = isFavorite(selectedAddress);
+    if (!selectedAddress) {
+      alert("장소 정보를 가져올 수 없습니다.");
+      return;
+    }
+    if (isFav) {
+      removeFavorite(selectedAddress);
+    } else {
+      addFavorite(selectedAddress, displayName);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -79,21 +96,38 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
               : "rounded-full bg-opacity-40" // 평소에는 완전 둥글게
           }`}
         />
-        {isOpen && keyword.length > 0 &&  (
+        {isOpen && keyword.length > 0 && (
           <ul className="absolute z-10 w-full overflow-hidden rounded-b-3xl border border-purple border-t-gray-300 bg-white/95 shadow-2xl">
             {suggestions.length > 0 ? (
               suggestions.map((region) => (
                 <li
                   key={region.id}
                   onClick={() => handleSelect(region)}
-                  className="flex cursor-pointer flex-col border-t-2 border-gray-100 bg-opacity-35 px-12 py-3 first:border-none hover:bg-[#E1E8F2]"
+                  className="flex cursor-pointer justify-between border-t-2 border-gray-100 bg-opacity-35 px-12 py-3 first:border-none hover:bg-[#E1E8F2]"
                 >
-                  <span className="text-sm font-bold text-gray-800 md:text-base">
-                    {region.displayName}
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    {region.address}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-gray-800 md:text-base">
+                      {region.displayName}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {region.address}
+                    </span>
+                  </div>
+                  <button
+                    onClick={(e: React.MouseEvent) => {
+                      e.stopPropagation();
+                      toggleFavorite(region.address, region.displayName);
+                    }}
+                    className="hover:scale-125"
+                  >
+                    <Star
+                      className={`w-7" h-7 fill-none ${
+                        isFavorite(region.address)
+                          ? "fill-yellow-200 text-yellow-400"
+                          : "text-yellow-200"
+                      }`}
+                    />
+                  </button>
                 </li>
               ))
             ) : (
