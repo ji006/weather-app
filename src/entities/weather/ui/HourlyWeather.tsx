@@ -18,7 +18,11 @@ const iconMap: { [key: string]: { label: string; icon: any; color: string } } =
     비: { label: "비", icon: CloudRain, color: "text-blue-400" },
     "비/눈": { label: "비/눈", icon: CloudSnowIcon, color: "text-blue-200" },
     눈: { label: "눈", icon: Snowflake, color: "text-white" },
-    소나기: { label: "소나기", icon: CloudSunRainIcon, color: "text-[#5b9bc2]" },
+    소나기: {
+      label: "소나기",
+      icon: CloudSunRainIcon,
+      color: "text-[#5b9bc2]",
+    },
   };
 
 export const HourlyWeather = ({ rawData }: { rawData: any[] }) => {
@@ -30,7 +34,7 @@ export const HourlyWeather = ({ rawData }: { rawData: any[] }) => {
     <div className="mb-7 mt-10 w-full max-w-[912px] rounded-xl bg-white/20 p-4 text-white shadow-sm backdrop-blur-md">
       <p className="mb-4 text-[14px] font-medium opacity-100">시간대별 기온</p>
 
-      <div className="scrollbar-hidden md:scrollbar-width-thin flex gap-7 overflow-x-auto pb-2 md:pb-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-transparent md:[&::-webkit-scrollbar-thumb]:bg-white/40 [&::-webkit-scrollbar-track]:bg-transparent md:[&::-webkit-scrollbar-track]:bg-white/10 [&::-webkit-scrollbar]:h-[10px]">
+      <div className="flex gap-7 overflow-x-auto pb-2 md:pb-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-transparent md:[&::-webkit-scrollbar-thumb]:bg-white/40 [&::-webkit-scrollbar-track]:bg-transparent md:[&::-webkit-scrollbar-track]:bg-white/10 [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:h-[10px] md:[&::-webkit-scrollbar]:block">
         {hourlyData.map((item, key) => {
           const weather = iconMap[item.condition];
           const WeatherIcon = weather?.icon;
