@@ -3,6 +3,7 @@ import { SearchInput } from "../../../features/search-location/ui/SearchInput";
 import { FavoriteWeatherSection } from "../../../widgets/favorite-weather/ui/FavoriteWeatherSection";
 import { Header } from "../../../widgets/header/ui/Header";
 import { useLocationStore } from "../../../shared/store/useLoaction";
+import { Footer } from "../../../widgets/footer/ui/Footer";
 
 export const FavoritePage = () => {
   const navigate = useNavigate();
@@ -20,10 +21,11 @@ export const FavoritePage = () => {
   return (
     <div className="flex min-h-screen w-full flex-col items-center bg-gradient-to-b from-[#A7D5E4] to-[#80A9E9]">
       <Header />
-      <div className="w-full max-w-[912px] px-6">
+      <div className="w-full max-w-[912px] flex-grow px-6">
         <SearchInput onSelectLocation={handleSelectLocation} />
         <FavoriteWeatherSection />
       </div>
+      <Footer />
     </div>
   );
 };
