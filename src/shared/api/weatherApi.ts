@@ -3,7 +3,7 @@ import { convertToNxNy } from "../lib/geoUtils";
 import { getBaseTime, getTodayFullTime } from "../lib/timeUtils";
 
 const SERVICE_KEY = import.meta.env.VITE_WEATHER_API_KEY; // 인코딩된 키
-const BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0";
+const BASE_URL = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0";
 
 export const getWeatherByTime = async (
   lat: number,
