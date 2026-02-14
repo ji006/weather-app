@@ -1,14 +1,12 @@
 import { Star, CloudMoon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLocationStore } from "../../../shared/store/useLoaction";
 
-interface HeaderProps {
-  isFav: boolean;
-}
-
-export const Header = ({ isFav }: HeaderProps) => {
+export const Header = () => {
   const navigate = useNavigate();
   const { resetLocation } = useLocationStore();
+  const location = useLocation();
+  const isFavoritePage = location.pathname === "/favorites";
 
   const handleHomeClick = () => {
     resetLocation();
@@ -30,7 +28,7 @@ export const Header = ({ isFav }: HeaderProps) => {
       </div>
       <div onClick={handleFavClick} className="flex flex-col items-end">
         <div
-          className={`flex cursor-pointer flex-col items-center rounded-xl bg-white/20 p-2 transition-colors hover:bg-white/30 active:scale-95 ${isFav ? "invisible" : "visible"}`}
+          className={`flex cursor-pointer flex-col items-center rounded-xl bg-white/20 p-2 transition-colors hover:bg-white/30 active:scale-95 ${isFavoritePage ? "invisible" : "visible"}`}
         >
           <Star className="h-8 w-8 fill-yellow-200 text-yellow-200 transition-all" />
           <span className="mt-1 text-[9px] font-bold text-gray-500">
