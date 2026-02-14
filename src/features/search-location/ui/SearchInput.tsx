@@ -106,7 +106,7 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
           }`}
         />
         {isOpen && keyword.length > 0 && (
-          <ul className="absolute z-10 w-full overflow-hidden rounded-b-3xl border border-purple border-t-gray-300 bg-white/95 shadow-2xl">
+          <ul className="absolute z-10 max-h-[400px] w-full overflow-y-auto overscroll-contain rounded-b-3xl border border-purple border-t-gray-300 bg-white/95 shadow-2xl">
             {suggestions.length > 0 ? (
               suggestions.map((region) => (
                 <li
