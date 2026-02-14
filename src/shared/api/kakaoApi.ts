@@ -24,18 +24,15 @@ export const getRegionName = async (lat: number, lon: number) => {
         region_3depth_name: d3,
       } = addr;
 
-      // 동 이름이 있으면 "구 동", 없으면 "구", 그것도 없으면 "시"만 출력
-      if (d3) return `${d2} ${d3}`;
-      if (d2) return `${d2}`;
+      // 동 이름이 있으면 "시 구 동", 없으면 "시 구", 그것도 없으면 "시"만 출력
+      if (d3) return `${d1} ${d2} ${d3}`;
+      if (d2) return `${d1} ${d2}`;
       return d1;
     }
     return "알 수 없는 지역";
   } catch (error: any) {
-    console.error(
-      "카카오 주소 변환 에러:",
-      error.response?.data || error.message,
-    );
-    return "서울특별시 (기본)";
+    console.error("카카오 주소 변환 에러:", error);
+    return "서울특별시";
   }
 };
 
@@ -46,7 +43,7 @@ export const searchLocation = async (query: string) => {
       `https://dapi.kakao.com/v2/local/search/address.json?query=${query}`,
       {
         headers: { Authorization: `KakaoAK ${KAKAO_REST_KEY}` },
-      }
+      },
     );
 
     if (res.data.documents.length > 0) {
@@ -54,7 +51,7 @@ export const searchLocation = async (query: string) => {
       return {
         lat: Number(doc.y),
         lon: Number(doc.x),
-        name: doc.address_name, // 검색 결과로 나온 정확한 주소명
+        address: doc.address_name, // 검색 결과로 나온 정확한 주소명
       };
     }
     return null;

@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 
 interface FavoriteWeatherProps {
   address: string;
-  location: string;
+  homeDisplayName: string;
+  favDisplayName: string;
   temp: number | string;
   min: number | string;
   max: number | string;
@@ -15,7 +16,8 @@ interface FavoriteWeatherProps {
 
 export const FavoriteWeatherCard = ({
   address,
-  location,
+  homeDisplayName,
+  favDisplayName,
   temp,
   min,
   max,
@@ -23,13 +25,12 @@ export const FavoriteWeatherCard = ({
 }: FavoriteWeatherProps) => {
   const navigate = useNavigate();
   const setLocation = useLocationStore((state) => state.setLocation);
-  const { removeFavorite } = useFavorite();
+  const { removeFavorite, updateNickname } = useFavorite();
 
   // 수정 모드 상태 관리
   const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState(location);
+  const [newName, setNewName] = useState(favDisplayName);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { updateAdrName } = useFavorite();
 
   useEffect(() => {
     if (isEditing) {
@@ -41,7 +42,7 @@ export const FavoriteWeatherCard = ({
   const handleCardClick = (e: React.MouseEvent) => {
     if (isEditing) return; // 수정 중에는 이동 방지
 
-    setLocation(address, location);
+    setLocation(address, homeDisplayName, newName);
     navigate("/");
   };
 
@@ -62,10 +63,14 @@ export const FavoriteWeatherCard = ({
   // 장소 이름 변경
   const handleUpdateName = (e: React.KeyboardEvent | React.FocusEvent) => {
     function save() {
-      if (newName.trim() && newName !== location) {
-        updateAdrName(address, newName.trim());
+      const trimmedName = newName.trim();
+      if (trimmedName && trimmedName !== favDisplayName) {
+        updateNickname(address, trimmedName);
+      } else {
+        // 이름이 비어있거나 변경사항이 없으면 원래 이름으로 복구
+        setNewName(favDisplayName);
       }
-      
+
       setTimeout(() => {
         setIsEditing(false);
       }, 100);
@@ -98,7 +103,7 @@ export const FavoriteWeatherCard = ({
           ) : (
             <div className="flex items-center gap-2">
               <span className="truncate text-xl font-medium text-gray-800 md:text-2xl">
-                {location}
+                {favDisplayName}
               </span>
               <button
                 onClick={handleEditClick}

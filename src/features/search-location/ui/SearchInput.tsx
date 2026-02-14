@@ -6,7 +6,11 @@ import districtsData from "../../../shared/assets/data/korea_districts.json";
 import { useFavorite } from "../../../shared/store/useFavorite";
 
 interface SearchInputProps {
-  onSelectLocation: (address: string, displayName: string) => void;
+  onSelectLocation: (
+    address: string,
+    homeDisplay: string,
+    displayName: string,
+  ) => void;
 }
 
 export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
@@ -16,6 +20,7 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
 
   // 즐겨찾기
   const { addFavorite, removeFavorite, isFavorite } = useFavorite();
+  const { favorites } = useFavorite();
 
   const toggleFavorite = (selectedAddress: string, displayName: string) => {
     const isFav = isFavorite(selectedAddress);
@@ -26,7 +31,7 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
     if (isFav) {
       removeFavorite(selectedAddress);
     } else {
-      addFavorite(selectedAddress, displayName);
+      addFavorite(selectedAddress, displayName, displayName);
     }
   };
 
@@ -68,7 +73,11 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
   }, [keyword, regions]);
 
   const handleSelect = (region: Region) => {
-    onSelectLocation(region.address, region.displayName);
+    const savedFav = favorites.find((f) => f.address === region.address);
+    const finalFavName = savedFav
+      ? savedFav.favDisplayName
+      : region.displayName;
+    onSelectLocation(region.address, region.displayName, finalFavName);
     setKeyword("");
     setIsOpen(false);
   };

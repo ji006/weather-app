@@ -13,7 +13,7 @@ export const CurrentWeather = ({
   temp,
   minTemp,
   maxTemp,
-  location,
+  location = "",
 }: CurrentWeatherProps) => {
   const { selectedAddress } = useLocationStore();
   const { addFavorite, removeFavorite, isFavorite } = useFavorite();
@@ -28,7 +28,7 @@ export const CurrentWeather = ({
     if (isFav) {
       removeFavorite(selectedAddress);
     } else {
-      addFavorite(selectedAddress, location);
+      addFavorite(selectedAddress, location, location);
     }
   };
 
@@ -38,22 +38,21 @@ export const CurrentWeather = ({
         {/* 지역, 즐겨찾기 */}
         <div className="mb-4 flex items-center gap-3">
           <h2
-            className={`font-bold ${location.length >= 6 ? "text-[17px] sm:text-2xl" : "text-xl md:text-2xl"}`}
+            className={`font-bold ${
+              (location?.length ?? 0) >= 6
+                ? "text-[17px] sm:text-2xl"
+                : "text-xl md:text-2xl"
+            }`}
           >
-            {location}
+            {location || "위치 정보 없음"}
           </h2>
-          <button
-            onClick={toggleFavorite}
-            className="hover:scale-110"
-          >
+          <button onClick={toggleFavorite} className="hover:scale-110">
             <Star
               className={`fill-none ${
-                location.length >= 7
+                (location?.length ?? 0) >= 7
                   ? "h-6 w-6 md:h-7 md:w-7" // 7자 이상: 모바일 작게(h-6)
                   : "h-7 w-7"
-              } ${
-                isFav ? "fill-yellow-200 text-yellow-200" : "text-white"
-              }`}
+              } ${isFav ? "fill-yellow-200 text-yellow-200" : "text-white"}`}
             />
           </button>
         </div>

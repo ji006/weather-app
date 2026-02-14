@@ -1,5 +1,6 @@
 import { Star, CloudMoon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLocationStore } from "../../../shared/store/useLoaction";
 
 interface HeaderProps {
   isFav: boolean;
@@ -7,9 +8,13 @@ interface HeaderProps {
 
 export const Header = ({ isFav }: HeaderProps) => {
   const navigate = useNavigate();
+  const { resetLocation } = useLocationStore();
+
   const handleHomeClick = () => {
+    resetLocation();
     navigate("/");
   };
+
   const handleFavClick = () => {
     navigate("/favorites");
   };

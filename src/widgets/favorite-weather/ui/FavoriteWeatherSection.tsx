@@ -44,7 +44,8 @@ export const FavoriteWeatherSection = () => {
             <FavoriteWeatherCard
               key={item.address}
               address={item.address}
-              location={currentFavorite?.displayAdr || item.displayAdr}
+              homeDisplayName={currentFavorite?.homeDisplayName || ""}
+              favDisplayName={currentFavorite?.favDisplayName || item.address}
               temp={item.temp}
               min={min}
               max={max}

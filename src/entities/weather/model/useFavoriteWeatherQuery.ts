@@ -3,7 +3,7 @@ import { getWeatherByTime } from "../../../shared/api/weatherApi";
 import { searchLocation } from "../../../shared/api/kakaoApi";
 
 export const useFavoriteWeatherQuery = (
-  favorites: { address: string; displayAdr: string }[],
+  favorites: { address: string; favDisplayName: string }[],
 ) => {
   return useQueries({
     queries: favorites.map((fav) => ({
@@ -11,7 +11,7 @@ export const useFavoriteWeatherQuery = (
       queryFn: async () => {
         // 주소로 좌표 찾기
         const coords = await searchLocation(fav.address);
-        if (!coords) throw new Error(`${fav.displayAdr} 좌표 조회 실패`);
+        if (!coords) throw new Error(`${fav.favDisplayName} 좌표 조회 실패`);
 
         // 좌표로 날씨 가져오기
         const [currentData, fullDayData] = await Promise.all([
@@ -25,7 +25,7 @@ export const useFavoriteWeatherQuery = (
           "--";
         return {
           address: fav.address,
-          displayAdr: fav.displayAdr,
+          favDisplayName: fav.favDisplayName,
           temp: currentTemp,
           fullDayData: fullDayData,
         };

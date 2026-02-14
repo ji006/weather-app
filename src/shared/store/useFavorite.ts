@@ -3,14 +3,19 @@ import { persist } from "zustand/middleware";
 
 export interface FavoriteItem {
   address: string;
-  displayAdr: string;
+  homeDisplayName: string;
+  favDisplayName: string;
 }
 
 interface FavoriteState {
   favorites: FavoriteItem[];
-  addFavorite: (address: string, displayAdr: string) => void;
+  addFavorite: (
+    address: string,
+    homeDisplayName: string,
+    favDisplayName: string,
+  ) => void;
   removeFavorite: (address: string) => void;
-  updateAdrName: (address: string, newNickname: string) => void;
+  updateNickname: (address: string, newNickname: string) => void;
   isFavorite: (address: string) => boolean;
 }
 
@@ -19,7 +24,7 @@ export const useFavorite = create<FavoriteState>()(
     (set, get) => ({
       favorites: [],
       // 등록
-      addFavorite: (address, displayAdr) => {
+      addFavorite: (address, homeDisplayName, favDisplayName) => {
         const { favorites } = get();
 
         // 중복 체크
@@ -31,7 +36,10 @@ export const useFavorite = create<FavoriteState>()(
           return;
         }
         set({
-          favorites: [...favorites, { address, displayAdr }],
+          favorites: [
+            ...favorites,
+            { address, homeDisplayName, favDisplayName },
+          ],
         });
       },
 
@@ -42,10 +50,12 @@ export const useFavorite = create<FavoriteState>()(
         })),
 
       // 주소 별칭 수정
-      updateAdrName: (address, newNickname) =>
+      updateNickname: (address, newNickname) =>
         set((state) => ({
           favorites: state.favorites.map((fav) =>
-            fav.address === address ? { ...fav, displayAdr: newNickname } : fav,
+            fav.address === address
+              ? { ...fav, favDisplayName: newNickname }
+              : fav,
           ),
         })),
 
