@@ -91,6 +91,7 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
         </div>
         {/* 검색창 input */}
         <input
+          id="search-location"
           type="text"
           value={keyword}
           onFocus={() => setIsOpen(true)}
@@ -108,43 +109,43 @@ export const SearchInput = ({ onSelectLocation }: SearchInputProps) => {
         {isOpen && keyword.length > 0 && (
           <ul className="absolute z-10 max-h-[400px] w-full overflow-hidden rounded-b-3xl border border-purple border-t-gray-300 bg-white/95 shadow-2xl">
             <div className="max-h-[400px] overflow-y-auto overscroll-contain">
-            {suggestions.length > 0 ? (
-              suggestions.map((region) => (
-                <li
-                  key={region.id}
-                  onClick={() => handleSelect(region)}
-                  className="flex cursor-pointer justify-between border-t-2 border-gray-100 bg-opacity-35 px-12 py-3 first:border-none hover:bg-[#E1E8F2]"
-                >
-                  <div className="flex flex-col">
-                    <span className="text-sm font-bold text-gray-800 md:text-base">
-                      {region.displayName}
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      {region.address}
-                    </span>
-                  </div>
-                  <button
-                    onClick={(e: React.MouseEvent) => {
-                      e.stopPropagation();
-                      toggleFavorite(region.address, region.displayName);
-                    }}
-                    className="hover:scale-125"
+              {suggestions.length > 0 ? (
+                suggestions.map((region) => (
+                  <li
+                    key={region.id}
+                    onClick={() => handleSelect(region)}
+                    className="flex cursor-pointer justify-between border-t-2 border-gray-100 bg-opacity-35 px-12 py-3 first:border-none hover:bg-[#E1E8F2]"
                   >
-                    <Star
-                      className={`w-7" h-7 fill-none ${
-                        isFavorite(region.address)
-                          ? "fill-yellow-200 text-yellow-400"
-                          : "text-yellow-200"
-                      }`}
-                    />
-                  </button>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold text-gray-800 md:text-base">
+                        {region.displayName}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {region.address}
+                      </span>
+                    </div>
+                    <button
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        toggleFavorite(region.address, region.displayName);
+                      }}
+                      className="hover:scale-125"
+                    >
+                      <Star
+                        className={`w-7" h-7 fill-none ${
+                          isFavorite(region.address)
+                            ? "fill-yellow-200 text-yellow-400"
+                            : "text-yellow-200"
+                        }`}
+                      />
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <li className="py-6 text-center text-sm text-gray-700">
+                  해당 장소의 정보가 제공되지 않습니다.
                 </li>
-              ))
-            ) : (
-              <li className="py-6 text-center text-sm text-gray-700">
-                해당 장소의 정보가 제공되지 않습니다.
-              </li>
-            )}
+              )}
             </div>
           </ul>
         )}
