@@ -79,6 +79,12 @@ export const MainWeather = () => {
 
   // 페이지 진입 시 위치 결정 로직
   useEffect(() => {
+
+    // 이전 장소의 기록 남는거 방지
+    if (!selectedAddress) {
+      setCoords(null)
+    }
+
     // 전역 상태에 선택된 위치가 있다면 최우선으로 로드
     if (selectedAddress) {
       // 화면에 보여줄 이름을 동기화
