@@ -40,8 +40,8 @@ export const CurrentWeather = ({
           <h2
             className={`font-bold ${
               (location?.length ?? 0) >= 6
-                ? "text-[17px] sm:text-2xl"
-                : "text-xl md:text-2xl"
+                ? "leading-tight break-keep text-xl sm:text-2xl"
+                : "text-2xl md:text-3xl"
             }`}
           >
             {location || "위치 정보 없음"}
@@ -59,7 +59,7 @@ export const CurrentWeather = ({
 
         {/* 현재 기온 정보 */}
         <div className="mb-5 flex justify-between">
-          <span className="mb-1 text-[15px] font-medium opacity-80 md:text-lg">
+          <span className="mb-1 text-[15px] font-medium opacity-90 md:text-lg">
             현재 기온
           </span>
           <span className="text-7xl leading-none text-gray-700 md:text-[90px]">

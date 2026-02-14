@@ -23,7 +23,7 @@ export const HourlyWeather = ({ rawData }: { rawData: any[] }) => {
 
   return (
     <div className="mb-7 mt-10 w-full max-w-[912px] rounded-xl bg-white/20 p-4 text-white shadow-sm backdrop-blur-md">
-      <p className="mb-4 text-xs font-medium opacity-80">시간대별 기온</p>
+      <p className="mb-4 text-[14px] font-medium opacity-100">시간대별 기온</p>
 
       <div className="scrollbar-width-none md:scrollbar-width-thin flex gap-7 overflow-x-auto md:pb-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-transparent md:[&::-webkit-scrollbar-thumb]:bg-white/40 [&::-webkit-scrollbar-track]:bg-transparent md:[&::-webkit-scrollbar-track]:bg-white/10 [&::-webkit-scrollbar]:h-[10px]">
         {hourlyData.map((item, key) => (
@@ -31,11 +31,11 @@ export const HourlyWeather = ({ rawData }: { rawData: any[] }) => {
             key={`${item.time}-${key}`}
             className="flex min-w-[40px] flex-col items-center gap-2"
           >
-            <span className="text-sm opacity-90">{item.time}</span>
+            <span className="text-sm font-bold opacity-90">{item.time}</span>
             {iconMap[item.condition] || (
               <BadgeQuestionMarkIcon className="h-6 w-6 text-gray-300" />
             )}
-            <span className="text-lg font-bold">{item.temp}°</span>
+            <span className="text-xl font-bold">{item.temp}°</span>
           </div>
         ))}
       </div>
