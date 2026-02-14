@@ -39,7 +39,7 @@ export const FavoriteWeatherCard = ({
   }, [isEditing]);
 
   // 카드 클릭 시 해당 날씨 조회
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = () => {
     if (isEditing) return; // 수정 중에는 이동 방지
 
     setLocation(address, homeDisplayName, newName);

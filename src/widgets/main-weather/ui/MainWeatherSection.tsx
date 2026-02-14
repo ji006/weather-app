@@ -152,6 +152,7 @@ export const MainWeather = () => {
           setLocation(regionName, homeDisplay, finalFav);
         },
         (error) => {
+          console.error("GPS 위치 권한 오류:", error);
           setCoords({ lat: 37.56, lon: 126.97 });
           setLocation("서울특별시", "서울특별시", "서울특별시");
         },
