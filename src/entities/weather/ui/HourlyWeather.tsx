@@ -30,7 +30,7 @@ export const HourlyWeather = ({ rawData }: { rawData: any[] }) => {
     <div className="mb-7 mt-10 w-full max-w-[912px] rounded-xl bg-white/20 p-4 text-white shadow-sm backdrop-blur-md">
       <p className="mb-4 text-[14px] font-medium opacity-100">시간대별 기온</p>
 
-      <div className="scrollbar-width-none md:scrollbar-width-thin flex gap-7 overflow-x-auto md:pb-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-transparent md:[&::-webkit-scrollbar-thumb]:bg-white/40 [&::-webkit-scrollbar-track]:bg-transparent md:[&::-webkit-scrollbar-track]:bg-white/10 [&::-webkit-scrollbar]:h-[10px]">
+      <div className="scrollbar-hidden md:scrollbar-width-thin flex gap-7 overflow-x-auto pb-2 md:pb-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-transparent md:[&::-webkit-scrollbar-thumb]:bg-white/40 [&::-webkit-scrollbar-track]:bg-transparent md:[&::-webkit-scrollbar-track]:bg-white/10 [&::-webkit-scrollbar]:h-[10px]">
         {hourlyData.map((item, key) => {
           const weather = iconMap[item.condition];
           const WeatherIcon = weather?.icon;
