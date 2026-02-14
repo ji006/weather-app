@@ -4,12 +4,14 @@ export const formatHourlyData = (rawItems: any[]) => {
    */
   const getWeatherCondition = (sky: number, pty: number) => {
     if (pty > 0) {
-      if (pty === 1 || pty === 4) return "Rain";
-      if (pty === 2 || pty === 3) return "Snow";
+      if (pty === 1) return "비";
+      if (pty === 2) return "비/눈";
+      if (pty === 3) return "눈";
+      if (pty === 4) return "소나기";
     }
-    if (sky === 1) return "Clear";
-    if (sky === 3) return "PartlyCloudy";
-    return "Cloudy";
+    if (sky === 1) return "맑음";
+    if (sky === 3) return "구름많음";
+    return "흐림";
   };
 
   const now = new Date();
