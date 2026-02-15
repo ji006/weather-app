@@ -6,9 +6,8 @@
     <strong>"오늘 국내 날씨, 확인해보세요"</strong><br />
     기상청 공공데이터와 카카오 로컬 API를 활용한 날씨 조회 서비스
   </p>
-    <img src="https://github.com/user-attachments/assets/53b615cf-fcfa-41d8-880c-867fe2773915" width="50%">
-    <div align="center">
-</div>
+    <img src="https://github.com/user-attachments/assets/53b615cf-fcfa-41d8-880c-867fe2773915" width="60%">
+    
   <p align="center">
     <a href="https://weatherview-eight.vercel.app/"><strong>✨ 배포 주소 바로가기</strong></a>
   </p>
