@@ -1,7 +1,7 @@
 // src/app/providers/router.tsx
 import { createBrowserRouter } from "react-router-dom";
 import { HomePage } from "../../pages/home/ui/HomePage";
-import { FavoritePage } from "../../pages/home/ui/FavoritePage";
+import { FavoritePage } from "../../pages/favorite/ui/FavoritePage";
 
 export const router = createBrowserRouter([
   {
